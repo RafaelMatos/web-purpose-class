@@ -20,9 +20,24 @@ const AccessButtons = () => {
           <DialogHeader>
             <DialogTitle>Realizar Cadastro</DialogTitle>
             <DialogDescription>
-              Aqui será feito o cadastro na aplicação
+              Faça o seu cadastro para ter acesso a diversos cursos para
+              aprimorar o seu conhecimento!
             </DialogDescription>
           </DialogHeader>
+          <form>
+            <p>Nome</p>
+            <Input placeholder="Seu nome" />
+            <p>E-mail</p>
+            <Input placeholder="Seu e-mail institutional" />
+            <p>Senha</p>
+            <Input placeholder="Sua senha" type="password" />
+            <p>Confirmar senha</p>
+            <Input placeholder="Confirme sua senha" type="password" />
+            <div className="flex gap-4">
+              <Button variant="outline">Cancelar</Button>
+              <Button variant="tertiary">Registrar</Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
       <Dialog>
@@ -36,13 +51,20 @@ const AccessButtons = () => {
           <DialogHeader>
             <DialogTitle>Realizar Login</DialogTitle>
             <DialogDescription>
-              Aqui será possivel realizar o login na aplicação
+              Faça o login para ter acesso a diversos cursos para aprimorar o
+              seu conhecimento!
             </DialogDescription>
           </DialogHeader>
-          <p>E-mail</p>
-          <Input placeholder="Seu e-mail institutional" />
-          <p>Senha</p>
-          <Input placeholder="Sua senha" type="password" />
+          <form>
+            <p>E-mail</p>
+            <Input placeholder="Seu e-mail institutional" />
+            <p>Senha</p>
+            <Input placeholder="Sua senha" type="password" />
+            <div className="flex gap-4">
+              <Button variant="outline">Cancelar</Button>
+              <Button variant="tertiary">Entrar</Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
