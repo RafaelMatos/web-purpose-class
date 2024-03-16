@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog'
+import { Input } from './ui/input'
 
 const AccessButtons = () => {
   return (
@@ -26,9 +27,10 @@ const AccessButtons = () => {
       </Dialog>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="h-10 px-4 py-2 text-gray-200 font-medium bg-blue-500 hover:bg-blue-500/90 rounded-md">
-            Acessar
-          </Button>
+          {/* <Button className="h-10 px-4 py-2 text-gray-200 font-medium hover:bg-blue-500/90 rounded-md"> */}
+
+          <Button variant="tertiary">Acessar</Button>
+          {/* <button className="bg-blue">Acessar</button> */}
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -37,6 +39,10 @@ const AccessButtons = () => {
               Aqui será possivel realizar o login na aplicação
             </DialogDescription>
           </DialogHeader>
+          <p>E-mail</p>
+          <Input placeholder="Seu e-mail institutional" />
+          <p>Senha</p>
+          <Input placeholder="Sua senha" type="password" />
         </DialogContent>
       </Dialog>
     </div>
