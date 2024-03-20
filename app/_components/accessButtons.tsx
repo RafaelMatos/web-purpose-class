@@ -1,19 +1,17 @@
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import SignInDialog from './dialogs/signIn'
 import UserRegisterDialog from './dialogs/userRegister'
 import { Button } from './ui/button'
-import { Dialog, DialogTrigger } from './ui/dialog'
 
 const AccessButtons = () => {
+  const router = useRouter()
   return (
     <div className="flex gap-4">
       <UserRegisterDialog />
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="tertiary">Acessar</Button>
-        </DialogTrigger>
-        <SignInDialog />
-      </Dialog>
+      {/* <SignInDialog /> */}
+      <Button variant="tertiary" onClick={() => router.push('/sign-in')}>
+        Login
+      </Button>
     </div>
   )
 }

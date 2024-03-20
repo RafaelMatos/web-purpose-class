@@ -20,11 +20,11 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { useRouter } from 'next/navigation'
 import { api } from '@/app/_lib/axios'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
+import { useToast } from '../ui/use-toast'
 
 const userRegisterFormSchema = z
   .object({
@@ -52,6 +52,7 @@ const userRegisterFormSchema = z
 type UserRegisterFormData = z.infer<typeof userRegisterFormSchema>
 
 const UserRegisterDialog = () => {
+  const { toast } = useToast()
   const form = useForm<UserRegisterFormData>({
     resolver: zodResolver(userRegisterFormSchema),
     defaultValues: {
@@ -65,8 +66,6 @@ const UserRegisterDialog = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [submitIsloading, setSubmitIsLoading] = useState(false)
 
-  const router = useRouter()
-
   const handleSubmit = async (data: UserRegisterFormData) => {
     try {
       setSubmitIsLoading(true)
@@ -77,17 +76,23 @@ const UserRegisterDialog = () => {
         password,
       })
 
-      if (response.status) {
-        router.push('/')
-      }
+      setDialogIsOpen(false)
+      form.reset()
+
+      toast({
+        title: 'Usuário cadastrado com sucesso!',
+        description: 'Faça o login para acessar aos cursos.',
+      })
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
-        alert(err.response.data.message)
+        toast({
+          title: 'Erro ao registrar usuário',
+          variant: 'destructive',
+          description: err.response.data.message,
+        })
       }
     } finally {
-      form.reset()
       setSubmitIsLoading(false)
-      setDialogIsOpen(false)
     }
   }
   return (

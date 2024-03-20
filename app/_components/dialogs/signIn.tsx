@@ -1,14 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { Button } from '../ui/button'
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '../ui/dialog'
 import { Input } from '../ui/input'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 // import axios, { AxiosError } from 'axios'
 import {
   Form,
@@ -18,6 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
+import { useToast } from '../ui/use-toast'
+import { useRouter } from 'next/navigation'
 // import { useRouter } from 'next/navigation'
 
 const signInFormSchema = z.object({
@@ -35,13 +40,25 @@ type SignInFormData = z.infer<typeof signInFormSchema>
 const SignInDialog = () => {
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
 
-  // const router = useRouter()
+  const { toast } = useToast()
+
+  const router = useRouter()
 
   const handleSubmit = async (data: SignInFormData) => {
     try {
-      console.log(data)
+      const { email, password } = data
+      const signInData = await signIn('auth-tidi', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      })
+      console.log(signInData)
     } catch (err) {
       console.log(err)
     } finally {
@@ -49,53 +66,61 @@ const SignInDialog = () => {
     }
   }
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Realizar Cadastro</DialogTitle>
-        <DialogDescription>
-          Faça o seu cadastro para ter acesso a diversos cursos para aprimorar o
-          seu conhecimento!
-        </DialogDescription>
-      </DialogHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>E-mail</FormLabel>
-                  <FormControl>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="tertiary">Acessar</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Realizar Login</DialogTitle>
+          <DialogDescription>
+            Faça o seu login para ter acesso a diversos cursos para aprimorar o
+            seu conhecimento!
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-8"
+          >
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>E-mail</FormLabel>
+                    {/* <FormControl> */}
                     <Input placeholder="seu_e-mail@email.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
+                    {/* </FormControl> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha</FormLabel>
+                    {/* <FormControl> */}
                     <Input placeholder="Sua senha" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex gap-4">
-            <Button variant="outline">Cancelar</Button>
-            <Button variant="tertiary" type="submit">
-              Entrar
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </DialogContent>
+                    {/* </FormControl> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex gap-4">
+              <Button variant="outline">Cancelar</Button>
+              <Button variant="tertiary" type="submit">
+                Entrar
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }
 
