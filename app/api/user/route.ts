@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           user: null,
-          message: 'User with email already exists',
+          message: 'Já existe um cadastro com esse e-mail!',
         },
         { status: 409 },
       )
