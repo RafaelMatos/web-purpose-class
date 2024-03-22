@@ -25,14 +25,26 @@ model User {
   enroll   Enroll[]
 }
 
+model Category {
+  id     Int      @id @default(autoincrement())
+  name   String
+  Course Course[]
+}
+
 model Course {
   id          String   @id @default(uuid())
   title       String
   description String
   summary     String
   imageUrl    String
+  categoryId  Int
   class       Class[]
   enroll      Enroll[]
+
+  // category Category @relation(fields: [categoryId], references: [id])
+
+  // @@index([categoryId])
+  Category Category @relation(fields: [categoryId], references: [id])
 }
 
 model Class {
