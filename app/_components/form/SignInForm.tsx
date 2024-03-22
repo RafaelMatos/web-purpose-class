@@ -13,10 +13,9 @@ import {
 // import { useToast } from '../ui/use-toast'
 import { Input } from '../ui/input'
 import * as z from 'zod'
-import { signIn } from 'next-auth/react'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-// import RegisterLink from '../dialogs/_components/registerLink'
+import { useFormState, useFormStatus } from 'react-dom'
+import { authenticate } from '@/app/_lib/actions'
+import { ArrowRight, CircleAlert } from 'lucide-react'
 
 const signInFormSchema = z.object({
   email: z
@@ -38,30 +37,34 @@ const SignInForm = () => {
       password: '',
     },
   })
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+  const { pending } = useFormStatus()
 
-  const [error, setError] = useState<string | null>(null)
+  // const [error, setError] = useState<string | null>(null)
   // const { toast } = useToast()
 
-  const router = useRouter()
+  // const router = useRouter()
 
-  const handleSubmit = async (data: SignInFormData) => {
-    const result = await signIn('auth-tidi', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    })
+  // const handleSubmit = async (data: SignInFormData) => {
+  //   // const result = await signIn('custom', {
+  //   //   email: data.email,
+  //   //   password: data.password,
+  //   //   callbackUrl,
+  //   // })
 
-    if (result?.error) {
-      setError('Login Inválido')
-      return
-    }
-
-    router.push('/classroom')
-  }
+  //   // if (result?.error) {
+  //   //   setError('Login Inválido')
+  //   //   return
+  //   // }
+  //   console.log('cookies:', cookies)
+  //   console.log('callbackUrl:', callbackUrl)
+  //   router.push('/classroom')
+  // }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      {/* <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8"> */}
+      <form action={dispatch} className="space-y-8">
         <div className="flex flex-col gap-4">
           <FormField
             control={form.control}
@@ -99,31 +102,24 @@ const SignInForm = () => {
           >
             Cancelar
           </Button> */}
-          <Button variant="tertiary" type="submit">
-            Entrar
+          <Button variant="tertiary" type="submit" aria-disabled={pending}>
+            Entrar <ArrowRight className="ml-auto h-5 w-5 text-gray-50" />
           </Button>
+          <div
+            className="flex h-8 items-end space-x-1"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {errorMessage && (
+              <>
+                <CircleAlert className="h-5 w-5 text-red-500" />
+                <p className="text-sm text-red-500">{errorMessage}</p>
+              </>
+            )}
+          </div>
         </div>
         {/* <RegisterLink /> */}
       </form>
-
-      {error && (
-        <div role="alert" className="alert alert-error">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="stroke-current shrink-0 h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span>{error}</span>
-        </div>
-      )}
     </Form>
   )
 }
