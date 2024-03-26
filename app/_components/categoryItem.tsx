@@ -1,38 +1,23 @@
 'use client'
 import { Category } from '@prisma/client'
-import { Card, CardContent } from './ui/card'
-import { useState } from 'react'
+import { Button } from './ui/button'
 
 interface CategoryItemProps {
   category: Category
-  active?: boolean
-  // onClickCategory: () => void
+  activeCategory: number | null
 }
 
 const CategoryItem = ({
   category,
-  // onClickCategory,
-  active,
+
+  activeCategory,
 }: CategoryItemProps) => {
-  const [activeCategory, setActiveCategory] = useState<number>(0)
-  const handleClickCategory = () => {
-    setActiveCategory((state) => {
-      if (state === category.id) {
-        return 0
-      } else {
-        return category.id
-      }
-    })
-  }
   return (
-    <Card
-      className={`flex p-2 justify-center border border-yellow-400 hover:cursor-pointer border-2 ${active ? 'bg-tertiary hover:bg-tertiary/80' : 'bg-blue-950 hover:bg-blue-950/80'}`}
-      onClick={handleClickCategory}
+    <Button
+      className={`flex p-2 w-full justify-center border text-yellow-400 uppercase font-bold border-yellow-400 hover:cursor-pointer border-2 ${activeCategory === category.id ? 'bg-tertiary hover:bg-tertiary/80' : 'bg-blue-950 hover:bg-blue-950/80'}`}
     >
-      <CardContent className="p-0 text-yellow-400 font-bold uppercase">
-        {category.name}
-      </CardContent>
-    </Card>
+      {category.name}
+    </Button>
   )
 }
 
