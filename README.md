@@ -83,14 +83,19 @@ cd /web-purpose-class
 ```
 npm install
 ```
-- Criar arquivo .env com as chaves necessarias( seguir arquivo .envExample)
+- Criar arquivo .env com as chaves necessarias( seguir arquivo .env.example)
 
-- Inicializa o Prisma( Usar banco de dados de sua preferencia, no exemplo é usado o postgresql)
-- Necessario fazer a instalação do docker na maquina
+- Crair o banco de dados Postgres na maquina (Necessario ter o Docker Desktop rodando  na maquina)
+```
+docker run --name postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+```
+<!--- Inicializa o Prisma( Usar banco de dados de sua preferencia, no exemplo é usado o postgresql)
+
 
 ```
 npx prisma init --datasource-provider postgresql
 ```
+-->
 - Realiza as migrations do Prisma
 
 ```
