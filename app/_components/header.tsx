@@ -3,7 +3,6 @@ import AccessButtons from './accessButtons'
 import { auth } from '@/auth'
 
 const Header = async () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false)
   const { user } = await auth()
   return (
     <header className="flex w-full p-4 items-center justify-between   bg-primary ">
